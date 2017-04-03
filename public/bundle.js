@@ -6180,8 +6180,6 @@ var addNewPlaylist = exports.addNewPlaylist = function addNewPlaylist(playlistNa
 var loadAllSongs = exports.loadAllSongs = function loadAllSongs() {
   return function (dispatch) {
     _axios2.default.get('/api/songs').then(function (response) {
-      console.log('axio request');
-      console.log(response.data);
       dispatch(receiveAllSongs(response.data));
     });
   };
@@ -9452,7 +9450,7 @@ function Stations(props) {
           { className: 'list-group-item', key: station },
           _react2.default.createElement(
             _reactRouter.Link,
-            { to: 'fill/me/in/later' },
+            { to: '/stations/' + station },
             station
           )
         );
@@ -16977,6 +16975,8 @@ var _LyricsContainer2 = _interopRequireDefault(_LyricsContainer);
 
 var _StationsContainer = __webpack_require__(152);
 
+var _StationContainer = __webpack_require__(344);
+
 var _App = __webpack_require__(144);
 
 var _App2 = _interopRequireDefault(_App);
@@ -16992,6 +16992,10 @@ var _Songs2 = _interopRequireDefault(_Songs);
 var _Stations = __webpack_require__(86);
 
 var _Stations2 = _interopRequireDefault(_Stations);
+
+var _Station = __webpack_require__(343);
+
+var _Station2 = _interopRequireDefault(_Station);
 
 var _reactRedux = __webpack_require__(87);
 
@@ -17066,7 +17070,12 @@ _reactDom2.default.render(_react2.default.createElement(
       _react2.default.createElement(_reactRouter.Route, { path: '/new-playlist', component: _NewPlaylistContainer2.default }),
       _react2.default.createElement(_reactRouter.Route, { path: '/playlists/:playlistId', component: _PlaylistContainer2.default, onEnter: onPlaylistEnter }),
       _react2.default.createElement(_reactRouter.Route, { path: '/lyrics', component: _LyricsContainer2.default }),
-      _react2.default.createElement(_reactRouter.Route, { path: '/stations', component: _StationsContainer.StationsContainer, onEnter: onStationsEnter }),
+      _react2.default.createElement(
+        _reactRouter.Route,
+        { path: '/stations', onEnter: onStationsEnter },
+        _react2.default.createElement(_reactRouter.Route, { path: '/stations/:genreName', component: _StationContainer.StationContainer }),
+        _react2.default.createElement(_reactRouter.IndexRoute, { component: _StationsContainer.StationsContainer })
+      ),
       _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/albums' })
     )
   )
@@ -33829,6 +33838,101 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Station;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Songs = __webpack_require__(40);
+
+var _Songs2 = _interopRequireDefault(_Songs);
+
+var _store = __webpack_require__(10);
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// const DUMMY_GENRE_NAME = 'Jazz';
+// const DUMMY_SONGS = [{
+//   id: 1,
+//   name: "A Love Supreme",
+//   genre: "Jazz",
+//   artists: [{ name: "John Coltrane" }]
+// }];
+// const DUMMY_CURRENT_SONG = {};
+// const DUMMY_IS_PLAYING = false;
+// const DUMMY_TOGGLE_ONE = function () {};
+
+function Station(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'h3',
+      null,
+      props.genreName,
+      ' Station'
+    ),
+    _react2.default.createElement(_Songs2.default, {
+      songs: props.songs,
+      currentSong: props.currentSong,
+      isPlaying: props.isPlaying
+      // toggleOne={DUMMY_TOGGLE_ONE}
+    })
+  );
+}
+
+/***/ }),
+/* 344 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.StationContainer = undefined;
+
+var _reactRedux = __webpack_require__(87);
+
+var _Station = __webpack_require__(343);
+
+var _Station2 = _interopRequireDefault(_Station);
+
+var _utils = __webpack_require__(33);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+	return {
+		genreName: ownProps.params.genreName,
+		songs: state.songs.filter(function (song) {
+			return song.genre === ownProps.params.genreName;
+		}).map(_utils.convertSong),
+		currentSong: state.player.currentSong,
+		isPlaying: state.player.isPLaying
+	};
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispath) {
+	return {};
+};
+
+var StationContainer = exports.StationContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Station2.default);
 
 /***/ })
 /******/ ]);

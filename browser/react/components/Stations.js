@@ -21,7 +21,7 @@ export default function Stations (props) {
         array.map(station => {
           return (
             <div className="list-group-item" key={station}>
-              <Link to={'fill/me/in/later'}>{station}</Link>
+              <Link to={`/stations/${station}`}>{station}</Link>
             </div>
           );
         })
