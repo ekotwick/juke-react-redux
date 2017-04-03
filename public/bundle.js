@@ -16584,6 +16584,10 @@ var _AddSongContainer = __webpack_require__(184);
 
 var _AddSongContainer2 = _interopRequireDefault(_AddSongContainer);
 
+var _AddSongContainerGLOBAL = __webpack_require__(345);
+
+var _AddSongContainerGLOBAL2 = _interopRequireDefault(_AddSongContainerGLOBAL);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Playlist(props) {
@@ -16604,7 +16608,7 @@ function Playlist(props) {
       null,
       'No songs.'
     ),
-    _react2.default.createElement(_AddSongContainer2.default, null),
+    _react2.default.createElement(_AddSongContainerGLOBAL2.default, null),
     _react2.default.createElement('hr', null)
   );
 }
@@ -16765,12 +16769,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var mapStateToProps = function mapStateToProps() {
-  return {};
-};
-
-var mapDispatchToProps = function mapDispatchToProps() {};
-
 var AddSongContainer = function (_React$Component) {
   _inherits(AddSongContainer, _React$Component);
 
@@ -16779,42 +16777,49 @@ var AddSongContainer = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (AddSongContainer.__proto__ || Object.getPrototypeOf(AddSongContainer)).call(this, props));
 
-    _this.state = Object.assign({
+    _this.state = {
       songId: 1,
       error: false
-    }, _store2.default.getState());
+    };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     return _this;
   }
 
+  //STAYS
+
+
   _createClass(AddSongContainer, [{
     key: 'handleChange',
     value: function handleChange(evt) {
+      console.log(evt.target.value);
       this.setState({
         songId: evt.target.value,
         error: false
       });
     }
+
+    //STAYS BUT METHOD SHOWS UP IN CONNECT FUNCTION
+
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(evt) {
-      var _this2 = this;
 
       evt.preventDefault();
-
-      var playlistId = this.state.playlists.selected.id;
+      // const playlistId = this.props.id;
+      var playlistId = this.props.selectedPlaylist.id;
       var songId = this.state.songId;
 
-      _store2.default.dispatch((0, _playlists.addSongToPlaylist)(playlistId, songId)).catch(function () {
-        return _this2.setState({ error: true });
-      });
+      this.props.formSubmit(playlistId, songId);
+
+      // store.dispatch(addSongToPlaylist(playlistId, songId))
+      //   .catch(() => this.setState({ error: true }));
     }
   }, {
     key: 'render',
     value: function render() {
 
-      var songs = this.state.songs;
+      var songs = this.props.songs;
       var error = this.state.error;
       var songId = this.state.songId;
 
@@ -16830,7 +16835,7 @@ var AddSongContainer = function (_React$Component) {
   return AddSongContainer;
 }(_react2.default.Component);
 
-exports.default = AddSongContainer = connect()(_AddSong2.default);
+exports.default = AddSongContainer;
 
 /***/ }),
 /* 185 */
@@ -17148,7 +17153,7 @@ _reactDom2.default.render(_react2.default.createElement(
         _react2.default.createElement(_reactRouter.Route, { path: 'albums', component: _Albums2.default }),
         _react2.default.createElement(_reactRouter.Route, { path: 'songs', component: _Songs2.default })
       ),
-      _react2.default.createElement(_reactRouter.Route, { path: '/new-playlist', component: _NewPlaylistContainer2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/new-playlist', component: _NewPlaylistContainer2.default, onEnter: onStationsEnter }),
       _react2.default.createElement(_reactRouter.Route, { path: '/playlists/:playlistId', component: _PlaylistContainer2.default, onEnter: onPlaylistEnter }),
       _react2.default.createElement(_reactRouter.Route, { path: '/lyrics', component: _LyricsContainer2.default }),
       _react2.default.createElement(
@@ -33919,6 +33924,44 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 345 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _reactRedux = __webpack_require__(51);
+
+var _playlists = __webpack_require__(50);
+
+var _AddSongContainer = __webpack_require__(184);
+
+var _AddSongContainer2 = _interopRequireDefault(_AddSongContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+	return {
+		songs: state.songs,
+		selectedPlaylist: state.playlists.selected
+	};
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	return {
+		formSubmit: function formSubmit(playlistId, songId) {
+			dispatch((0, _playlists.addSongToPlaylist)(playlistId, songId));
+		}
+	};
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AddSongContainer2.default);
 
 /***/ })
 /******/ ]);

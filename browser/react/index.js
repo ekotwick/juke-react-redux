@@ -70,7 +70,7 @@ ReactDOM.render(
           <Route path="albums" component={Albums}/>
           <Route path="songs" component={Songs}/>
         </Route>
-        <Route path="/new-playlist" component={NewPlaylistContainer}/>
+        <Route path="/new-playlist" component={NewPlaylistContainer} onEnter={onStationsEnter}/>
         <Route path="/playlists/:playlistId" component={PlaylistContainer} onEnter={onPlaylistEnter}/>
         <Route path="/lyrics" component={LyricsContainer} />
 
