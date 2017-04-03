@@ -4,22 +4,24 @@ import store from '../store';
 
 export default function Stations (props) {
 
-	const DUMMY_STATIONS_DATA = [
-	  { name: '90s Hip Hop' },
-	  { name: 'Death Metal' },
-	  { name: 'Classical' }
-	]; 
-	console.log(props);
-	console.log(store.getState());
+  const array = [];
+  const songNames = props.stations;
+
+  (songNames => {
+    for (var key in songNames) {
+      array.push(key);
+    }
+  })(songNames);
+
 	return (
     <div>
       <h3>Stations</h3>
       <div className="list-group">
       {
-        DUMMY_STATIONS_DATA.map(station => {
+        array.map(station => {
           return (
-            <div className="list-group-item" key={station.name}>
-              <Link to={'fill/me/in/later'}>{station.name}</Link>
+            <div className="list-group-item" key={station}>
+              <Link to={'fill/me/in/later'}>{station}</Link>
             </div>
           );
         })
