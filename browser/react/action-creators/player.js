@@ -58,6 +58,7 @@ export const setProgress = progress => ({
 });
 
 export const load = (song, list) => {
+  console.log('OK');
   return dispatch => {
     AUDIO.src = song.audioUrl;
     AUDIO.load();

@@ -3,6 +3,16 @@ import AddSong from '../components/AddSong';
 import store from '../store';
 import {loadAllSongs, addSongToPlaylist} from '../action-creators/playlists';
 
+const mapStateToProps = function () {
+  return {
+    
+  }
+};
+
+const mapDispatchToProps = function () {
+
+};
+
 class AddSongContainer extends React.Component {
 
   constructor(props) {
@@ -13,20 +23,6 @@ class AddSongContainer extends React.Component {
     }, store.getState());
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-
-    this.unsubscribe = store.subscribe(() => {
-      this.setState(store.getState());
-    });
-
-    store.dispatch(loadAllSongs());
-
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
   }
 
   handleChange(evt) {
@@ -66,4 +62,6 @@ class AddSongContainer extends React.Component {
   }
 }
 
-export default AddSongContainer;
+export default AddSongContainer = connect(
+
+)(AddSong);
